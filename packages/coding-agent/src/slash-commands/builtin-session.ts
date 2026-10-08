@@ -329,7 +329,7 @@ export const BUILTIN_SESSION_SLASH_COMMANDS: ReadonlyArray<SlashCommandSpec> = [
 		subcommands: [{ name: "full", description: "Show full, untruncated command lines" }],
 		allowArgs: true,
 		getTuiAutocompleteDescription: runtime => {
-			const snapshot = runtime.ctx.session.getAsyncJobSnapshot({ recentLimit: 5 });
+			const snapshot = runtime.ctx.viewSession.getAsyncJobSnapshot({ recentLimit: 5 });
 			if (!snapshot || (snapshot.running.length === 0 && snapshot.recent.length === 0)) return "Jobs: none";
 			return `Jobs: ${snapshot.running.length} running, ${snapshot.recent.length} recent`;
 		},

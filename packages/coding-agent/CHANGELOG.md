@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed `/jobs` showing nothing when run while focused on a subagent; it now lists the focused agent's background jobs ([#14814](https://github.com/can1357/oh-my-pi/issues/14814))
+
 ## [18.8.4] - 2026-10-08
 
 ### Changed

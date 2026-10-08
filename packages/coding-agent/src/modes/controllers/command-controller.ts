@@ -731,7 +731,10 @@ export class CommandController {
 	 */
 	async handleJobsCommand(options?: { full?: boolean }): Promise<void> {
 		const full = options?.full === true;
-		const snapshot = this.ctx.session.getAsyncJobSnapshot({ recentLimit: 5 });
+		// Use the viewed session (focused subagent's when focused) so /jobs
+		// lists that agent's jobs instead of silently showing the main
+		// session's (issue #14814).
+		const snapshot = this.ctx.viewSession.getAsyncJobSnapshot({ recentLimit: 5 });
 		if (!snapshot) {
 			this.ctx.showWarning("Async background jobs are unavailable in this session.");
 			return;

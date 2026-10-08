@@ -7136,15 +7136,18 @@ export class InteractiveMode implements InteractiveModeContext {
 	 */
 	showJobsSheet(): void {
 		if (this.#jobsSheetHandle) return;
-		if (!this.session.getAsyncJobSnapshot()) {
+		// Scope to the viewed session so the sheet lists the focused
+		// subagent's jobs when focused (issue #14814).
+		const session = this.viewSession;
+		if (!session.getAsyncJobSnapshot()) {
 			this.showWarning("Async background jobs are unavailable in this session.");
 			return;
 		}
 		const sheet = new JobsSheet({
-			load: () => this.session.getAsyncJobSnapshot({ recentLimit: 5 }) ?? { running: [], recent: [] },
-			inspect: id => this.session.inspectAsyncJob(id),
+			load: () => session.getAsyncJobSnapshot({ recentLimit: 5 }) ?? { running: [], recent: [] },
+			inspect: id => session.inspectAsyncJob(id),
 			cancel: id => {
-				this.session.cancelAsyncJob(id);
+				session.cancelAsyncJob(id);
 				this.ui.requestRender();
 			},
 			close: () => this.#hideJobsSheet(),
